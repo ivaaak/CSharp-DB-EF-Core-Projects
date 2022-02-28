@@ -43,9 +43,9 @@ namespace AdvancedQuerying
 		AgeRestriction ageRestriction = 
 			Enum.Parse<AgeRestriction> (command, true); 
 
-		string[] bookTitles = context 								// BookShopContext 
+		string[] bookTitles = context 									// BookShopContext 
 			.Books											// DbSet<Book>
-			.Where(b => b.AgeRestriction == ageRestriction) 				// IQueryable<Book> 
+			.Where(b => b.AgeRestriction == ageRestriction) 					// IQueryable<Book> 
 			.OrderBy(b => b. Title) 								// IOrderedQueryable<Book> 
 			.Select(b => b.Title)									// IQueryable<string>
 			.ToArray(); 
@@ -63,8 +63,8 @@ namespace AdvancedQuerying
 	{ 
 		StringBuilder sb = new StringBuilder(); 
 		
-		string[] goldenBooksTitles = context 							// BookShopContext 
-			.Books   											// DbSet<Book>
+		string[] goldenBooksTitles = context 								// BookShopContext 
+			.Books   										// DbSet<Book>
 			.Where(b => b.EditionType == EditionType.Gold && 
 						 b.Copies < 5000) 						// IQueryable<Book> 
 			.OrderBy(b => b.BookId) 								// IOrderedQueryable<Book> 
@@ -84,7 +84,7 @@ namespace AdvancedQuerying
 	{ 
 		StringBuilder sb = new StringBuilder(); 
 	
-		string[] booksNotReleasedInTitles = context						// BookShopContext 
+		string[] booksNotReleasedInTitles = context							// BookShopContext 
 			.Books 											// DbSet<Book> 
 			.Where(b => b.ReleaseDate.HasValue &&
 						 b.ReleaseDate.Value.Year != year)				// IQueryable<Book> 
@@ -106,14 +106,14 @@ namespace AdvancedQuerying
 		StringBuilder sb = new StringBuilder(); 
 		
 		string[] authorNames = context    								// BookShopContext 
-			.Authors 											// DbSet<Author> 
-			.ToArray()                             						// Author[]      used to bypass EF bug (cant translate query)
+			.Authors 										// DbSet<Author> 
+			.ToArray()                             							// Author[]      used to bypass EF bug (cant translate query)
 			.Where(a => 
 					a.FirstName
 					.ToLower()
 					.EndsWith(input.ToLower()))						// IQueryable<Author> 
-			.Select (a => $''{a.FirstName} {a.LastName}'') 					// IQueryable<string> 
-			.OrderBy(n => n)										// IOrderedQueryabie<string> 
+			.Select (a => $''{a.FirstName} {a.LastName}'') 						// IQueryable<string> 
+			.OrderBy(n => n)									// IOrderedQueryabie<string> 
 			.ToArray();
 			
 		foreach (string authorName in authorNames)
@@ -130,16 +130,16 @@ namespace AdvancedQuerying
 	{ 
 		StringBuilder sb = new StringBuilder(); 
 		
-		var authorsWithBookCopies = context 						// BookShopContext 
-			.Authors 										// DbSet<Author> 
+		var authorsWithBookCopies = context 							// BookShopContext 
+			.Authors 									// DbSet<Author> 
 			.Select(a => new 
 			{ 
 				FullName = a.FirstName + " " + a.LastName, 
 				TotalBookCopies = a  							// Author
 					.Books 								// ICollection<Book>
 					.Sum(b => b.Copies) 						// int 
-			}) 											// IQueryable<{FullName, TotalBookCopies}> 
-			.OrderByDescending(a => a .TotalBookCopies) 				//OrderedQueryable<(FullName, TotalBookCopies)> 
+			}) 										// IQueryable<{FullName, TotalBookCopies}> 
+			.OrderByDescending(a => a .TotalBookCopies) 					//OrderedQueryable<(FullName, TotalBookCopies)> 
 			.ToArray(); 
 			
 		foreach (var author in authorsWithBookCopies) 
@@ -160,11 +160,11 @@ namespace AdvancedQuerying
 			.Select(c => new 
 			{ 
 				CategoryName = c.Name, 
-				TotalProfit = c.CategoryBooks 				// ICollection<BookCategory> 
-					.Sum(cb => cb.Book.Copies * cb.Book.Price)  	//decimal
-			}										// IQueryable<CategoryName, TotalProfit> 
+				TotalProfit = c.CategoryBooks 					// ICollection<BookCategory> 
+					.Sum(cb => cb.Book.Copies * cb.Book.Price)  		//decimal
+			}									// IQueryable<CategoryName, TotalProfit> 
 			.OrderByDescending(c => c.TotalProfit) 	
-			.ThenBy(c => c.CategoryName)   		 			// IOrderedQueryable<CategoryName,TotalProfit> 
+			.ThenBy(c => c.CategoryName)   		 				// IOrderedQueryable<CategoryName,TotalProfit> 
 			.ToArray(); 
 		
 		foreach (var category categoriesByProfit) 
@@ -178,23 +178,23 @@ namespace AdvancedQuerying
 	public static string GetMostRecentBooks(BookShopContext context) 
 	{ 
 		StringBuilder sb = new StringBuilder(); 
-		var categoriesWithMostRecentBooks = context 				// BookShopContext 
-			.Categories									// DbSet<Category> 
+		var categoriesWithMostRecentBooks = context 					// BookShopContext 
+			.Categories								// DbSet<Category> 
 			.Select(c => new 
 			{ 
 				CategoryName = c.Name, 
 				MostRecentBooks = c.CategoryBooks				// ICollection<BookCategory> 
 					.Select (cb => cb.Book) 				// IEnumerable<Book> 
-					.OrderByDescending(b => b.ReleaseDate)		// IOrderedEnumerable<Book> 
+					.OrderByDescending(b => b.ReleaseDate)			// IOrderedEnumerable<Book> 
 					.Select(b => new
 					{
 						BookTitle = b.Title, 
 						ReleaseYear = b.ReleaseDate.Value.Year
 					})
-					.Take (3) 							// IEnumerable“BookTitle,ReleaseYearl> 
-					.ToArray() 							// {BookTitle,ReleaseYear}  
-			})										// IQueryable<{CategoryName, MostRecentBooks}> 
-			.OrderBy(c => c.CategoryName) 					// IOrderedQueryable<CategoryName,MostRecentBooks> 
+					.Take (3) 						// IEnumerable“BookTitle,ReleaseYearl> 
+					.ToArray() 						// {BookTitle,ReleaseYear}  
+			})									// IQueryable<{CategoryName, MostRecentBooks}> 
+			.OrderBy(c => c.CategoryName) 						// IOrderedQueryable<CategoryName,MostRecentBooks> 
 			.ToArray(); 
 			
 		foreach (var category categoriesByProfit) 
