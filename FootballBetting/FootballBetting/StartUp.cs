@@ -1,8 +1,8 @@
-﻿using System;
+using System;
+using Data;
 
 namespace FootballBetting
 {
-    using Data;
     public class StartUp
     {
         static void Main(string[] args)
