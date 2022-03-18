@@ -4,6 +4,8 @@ using System.Text;
 using Data;
 using Initializer;
 
+//This project isnt complete and doesnt run
+//These are just the queries/answers to lab problems - a showcase of the LINQ queries
 namespace AdvancedQuerying
 {
     public class StartUp
@@ -124,7 +126,6 @@ namespace AdvancedQuerying
 		return sb.ToString().TrimEnd();
 	}
 	
-	
 	//Problem 06
 	public static string CountCopiesByAuthor(BookShopContext context) 
 	{ 
@@ -174,6 +175,7 @@ namespace AdvancedQuerying
 		
 		return sb.ToString().TrimEnd();
 	} 
+				
 	// Problem 08
 	public static string GetMostRecentBooks(BookShopContext context) 
 	{ 
