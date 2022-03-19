@@ -1,8 +1,8 @@
-﻿namespace FastFood.Models
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
+namespace FastFood.Models
+{
     public class Category
     {
 	    public int Id { get; set; }
