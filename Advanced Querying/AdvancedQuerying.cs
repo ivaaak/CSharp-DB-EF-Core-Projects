@@ -5,7 +5,7 @@ using Data;
 using Initializer;
 
 //This project isnt complete and doesnt run
-//These are just the queries/answers to lab problems - a showcase of the LINQ queries
+//These are just the queries/answers to lab problems - a showcase of the LINQ queries which are solutions to a Lab/exercise
 namespace AdvancedQuerying
 {
     public class StartUp
