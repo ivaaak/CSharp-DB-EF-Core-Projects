@@ -1,14 +1,12 @@
-﻿namespace TeisterMask
+using System;
+using System.IO;
+using System.Globalization;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Data;
+
+namespace TeisterMask
 {
-    using System;
-    using System.IO;
-    using System.Globalization;
-
-    using AutoMapper;
-    using Microsoft.EntityFrameworkCore;
-
-    using Data;
-
     public class StartUp
     {
         public static void Main(string[] args)
@@ -16,18 +14,14 @@
             var context = new TeisterMaskContext();
 
             //Mapper.Initialize(cfg => cfg.AddProfile<TeisterMaskProfile>());
-
             ResetDatabase(context, shouldDropDatabase: false);
 
             //Import and Export part
             var projectDir = GetProjectDirectory();
-
             ImportEntities(context, projectDir + @"Datasets/", projectDir + @"ImportResults/");
 
             //ExportEntities(context, projectDir + @"ExportResults/");
-
             using var transaction = context.Database.BeginTransaction();
-
             transaction.Rollback();
         }
 
