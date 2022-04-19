@@ -1,10 +1,9 @@
-﻿namespace TeisterMask.Data.Models
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Common;
+
+namespace TeisterMask.Data.Models
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    using Common;
-
     public class Employee
     {
         public Employee()
